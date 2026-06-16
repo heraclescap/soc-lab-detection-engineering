@@ -1,4 +1,4 @@
-# Homelab SOC - Detection Engineering sur Elastic Stack 8.19.16
+# Homelab SOC - Detection Engineering sur ELK 8.19.16
 
 Ce repo documente six cas de detection engineering réalisés sur mon homelab SOC. Quatre cas suivent un workflow comportemental classique : je simule une technique ATT&CK connue, je vérifie si une règle Elastic prebuilt la détecte, et si ce n'est pas le cas j'écris une règle custom (KQL ou EQL), puis je documente la démarche : succès, limites et contournements compris. Le cinquième cas documente une règle Indicator Match alimentée par un feed MISP, qui relève d'un paradigme différent : corrélation d'activité réseau contre une base d'IOCs connus plutôt que détection de comportement. Le sixième cas combine les deux approches en corrélant une séquence d'exécution EQL avec la règle MISP du cas précédent.
 
