@@ -1,0 +1,132 @@
+{
+  "name": "soc-lab-detection-engineering",
+  "versions": {
+    "attack": "19",
+    "navigator": "5.1",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Couverture de détection du repo soc-lab-detection-engineering - 6 cas documentés sur Elastic Stack 8.x avec Sysmon (injection synthétique).",
+  "filters": {
+    "platforms": ["Windows"]
+  },
+  "sorting": 0,
+  "layout": {
+    "layout": "side",
+    "aggregateFunction": "average",
+    "showID": true,
+    "showName": true,
+    "showAggregateScores": false,
+    "countUnscored": false,
+    "expandedSubtechniques": "annotated"
+  },
+  "hideDisabled": false,
+  "techniques": [
+    {
+      "techniqueID": "T1105",
+      "tactic": "command-and-control",
+      "color": "#3d85c8",
+      "comment": "Cas 01 — CertUtil LOLBin. Règle KQL sur winlog.event_data.OriginalFileName + CommandLine. Couverture limitée à certutil.exe.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1140",
+      "tactic": "defense-evasion",
+      "color": "#3d85c8",
+      "comment": "Cas 01 — CertUtil LOLBin. Même règle KQL couvrant les flags -decode et -encode.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1059.001",
+      "tactic": "execution",
+      "color": "#3d85c8",
+      "comment": "Cas 02 — PowerShell Script Block Logging. Règle KQL sur winlog.event_data.ScriptBlockText (Event 4104). Bypass connu : downgrade PowerShell v2.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1027",
+      "tactic": "defense-evasion",
+      "color": "#3d85c8",
+      "comment": "Cas 02 — PowerShell Script Block Logging. Le SBL capture le code déobfusqué. Ne couvre pas toutes les formes d'obfuscation avancée.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1053.005",
+      "tactic": "persistence",
+      "color": "#3d85c8",
+      "comment": "Cas 03 — Scheduled Task depuis un shell. Règle EQL (any where) sur Sysmon EID 1. Couvre schtasks.exe uniquement, pas Register-ScheduledTask.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1003.001",
+      "tactic": "credential-access",
+      "color": "#cc0000",
+      "comment": "Cas 04 — LSASS Memory Read. Règle KQL sur Sysmon EID 10, filtre GrantedAccess (0x1010, 0x1410, 0x143a, 0x1ffff). Bypass : injection dans un process whitelisté ou handle duplication.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1059",
+      "tactic": "execution",
+      "color": "#6aa84f",
+      "comment": "Cas 05 — C2 Pattern EQL sequence. Premier event de la séquence : process shell (powershell, cmd, certutil, mshta).",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1071",
+      "tactic": "command-and-control",
+      "color": "#6aa84f",
+      "comment": "Cas 05 — C2 Pattern EQL sequence + MISP Indicator Match. Second event de la séquence : connexion réseau vers IP externe non-RFC1918.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    }
+  ],
+  "gradient": {
+    "colors": ["#ff6666", "#ffe766", "#8ec843"],
+    "minValue": 0,
+    "maxValue": 100
+  },
+  "legendItems": [
+    {
+      "label": "Couvert — règle KQL/EQL déclenchée",
+      "color": "#3d85c8"
+    },
+    {
+      "label": "Couvert — Critical (LSASS)",
+      "color": "#cc0000"
+    },
+    {
+      "label": "Couvert — corrélation EQL + IOC Match",
+      "color": "#6aa84f"
+    }
+  ],
+  "metadata": [],
+  "links": [],
+  "showTacticRowBackground": false,
+  "tacticRowBackground": "#dddddd",
+  "selectTechniquesAcrossTactics": true,
+  "selectSubtechniquesWithParent": false,
+  "selectVisibleTechniques": false
+}
